@@ -1,0 +1,21 @@
+/shufflecolors
+	Randomly assigns all online players a color. Duplicates will be used after 11 players.
+
+/listcolors
+	Lists all colors used by this plugin.
+
+/listcolors inuse
+	Lists all unique colors currently assigned to a player.
+
+/listcolors avail
+	Lists all colors not currently assigned to a player.
+
+/changecolor [player] color [overwrite]
+	Assigns a color to a player (assumes self). Will not work if color is in use unless overwrite flag is true.
+
+
+PERMISSIONS NODES:
+randomnamecolor.shuffle
+randomnamecolor.change.self.unique
+randomnamecolor.change.self.overwrite
+randomnamecolor.change.others
