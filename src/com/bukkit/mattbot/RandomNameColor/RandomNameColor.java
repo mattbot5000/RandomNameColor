@@ -1,29 +1,23 @@
 package com.bukkit.mattbot.RandomNameColor;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 
 import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
-import org.bukkit.Server;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 
 
 import com.nijikokun.bukkit.Permissions.Permissions;
-import com.nijiko.Messaging;
 import com.nijiko.permissions.PermissionHandler;
-import org.bukkit.plugin.Plugin;
-
 import org.anjocaido.groupmanager.GroupManager;
-import com.nijiko.permissions.PermissionHandler;
 
 
 public class RandomNameColor extends JavaPlugin{
@@ -33,7 +27,7 @@ public class RandomNameColor extends JavaPlugin{
     public final HashMap<Player,ChatColor> userColors = new HashMap<Player, ChatColor>();
     //private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
     //public final ChatColor[] colors = {ChatColor.AQUA,ChatColor.BLACK,ChatColor.BLUE,ChatColor.DARK_AQUA,ChatColor.DARK_BLUE,ChatColor.DARK_GRAY,ChatColor.DARK_GREEN,ChatColor.DARK_PURPLE,ChatColor.DARK_RED,ChatColor.GOLD,ChatColor.GRAY,ChatColor.GREEN,ChatColor.LIGHT_PURPLE,ChatColor.RED,ChatColor.WHITE,ChatColor.YELLOW};
-    public final ChatColor[] colors = {ChatColor.AQUA,ChatColor.BLUE,ChatColor.DARK_AQUA,ChatColor.DARK_BLUE,ChatColor.DARK_GREEN,ChatColor.DARK_PURPLE,ChatColor.DARK_RED,ChatColor.GOLD,ChatColor.GREEN,ChatColor.RED,ChatColor.YELLOW};
+    public final ChatColor[] colors = {ChatColor.AQUA,ChatColor.BLUE,ChatColor.DARK_AQUA,ChatColor.DARK_BLUE,ChatColor.DARK_GRAY,ChatColor.DARK_GREEN,ChatColor.DARK_PURPLE,ChatColor.DARK_RED,ChatColor.GOLD,ChatColor.GRAY,ChatColor.GREEN,ChatColor.RED,ChatColor.WHITE,ChatColor.YELLOW};
     public boolean GMrunning;
     //public PermissionHandler Security;
     
@@ -148,21 +142,30 @@ public class RandomNameColor extends JavaPlugin{
     	p.setDisplayName(c + p.getName() + ChatColor.WHITE);
     }
     
-    public void freeColor(Player player) {
+    public void releaseColor(Player player) {
     	this.userColors.remove(player);
     }
     
     public boolean validColor(String c) {
-    	try {
-    		return ChatColor.valueOf(c.toUpperCase()) != null;
+    	//return ChatColor.valueOf(c.toUpperCase()) != null;
+    	try {    		
+    		ChatColor color = ChatColor.valueOf(c.toUpperCase());
+    		for (ChatColor a : colors) {
+    			if (a==color) {
+    				return true;
+    			}
+    		}
+    		
+    		return false;
     	} catch(java.lang.IllegalArgumentException e) {
     		return false;
-    	}
-    	
-    	//return colors.toString().toLowerCase().contains(c.toLowerCase());
+    	}    	
     }
     
     public boolean availColor(String c) {
     	return !userColors.containsValue(ChatColor.valueOf(c.toUpperCase()));
+    }
+    public boolean isPlayer(String p) {
+    	return Arrays.asList(getServer().getOnlinePlayers()).contains(getServer().getPlayer(p));
     }
 }

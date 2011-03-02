@@ -1,12 +1,11 @@
 package com.bukkit.mattbot.RandomNameColor;
 
-import java.util.Arrays;
-
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerListener;
+
 
 public class RandomNameColorPlayerListener extends PlayerListener{
 	public static RandomNameColor plugin;
@@ -51,14 +50,14 @@ public class RandomNameColorPlayerListener extends PlayerListener{
 						player.sendMessage(split[1] + " is not a valid color. Use /listcolors [inuse,avail]");
 					}
 				} else if (split.length==3) { //assign color to player OR assign color to self, overwrite				
-					if (Arrays.asList(plugin.getServer().getOnlinePlayers()).contains(plugin.getServer().getPlayer(split[1]))) { //first param is an online player
+					if (plugin.isPlayer(split[1])) { //first param is an online player
 						if(!(plugin.GMrunning && RandomNameColor.Permissions.has(player, "randomnamecolor.change.others"))){
 							player.sendMessage(ChatColor.RED+"You do not have permission to do that");
 							return;				
 						}
 						
 						if (plugin.validColor(split[2])) {
-							plugin.freeColor(plugin.getServer().getPlayer(split[1]));
+							plugin.releaseColor(plugin.getServer().getPlayer(split[1]));
 							plugin.setColor(plugin.getServer().getPlayer(split[1]), ChatColor.valueOf(split[2].toUpperCase()));
 						} else {
 							player.sendMessage(helpMsg);
@@ -68,14 +67,14 @@ public class RandomNameColorPlayerListener extends PlayerListener{
 							player.sendMessage(ChatColor.RED+"You do not have permission to do that");
 							return;				
 						}
-						
-						if (split[2] == "1" || split[2]== "true" || split[2] == "t") {
-							plugin.freeColor(player);
-							plugin.setColor(player,ChatColor.valueOf(split[2].toUpperCase()));
+						if (split[2].equals("1") || split[2].equalsIgnoreCase("true") || split[2].equalsIgnoreCase("t")) {
+							plugin.releaseColor(player);
+							plugin.setColor(player,ChatColor.valueOf(split[1].toUpperCase()));
 						} else {
 							player.sendMessage(helpMsg);
 						}
 					} else { //first param is offline player, invalid color, or something irrelevant
+						System.out.println("first param invalid");
 						player.sendMessage(helpMsg);
 					}
 				} else if (split.length==4) { //assign color to player, overwrite
@@ -84,8 +83,8 @@ public class RandomNameColorPlayerListener extends PlayerListener{
 						return;				
 					}
 					
-					if (Arrays.asList(plugin.getServer().getOnlinePlayers()).contains(plugin.getServer().getPlayer(split[1])) && plugin.validColor(split[2]) && (split[3] == "1" || split[3]== "true" || split[3] == "t")) {
-						plugin.freeColor(plugin.getServer().getPlayer(split[1]));
+					if (plugin.isPlayer(split[1]) && plugin.validColor(split[2]) && (split[3].equals("1") || split[3].equalsIgnoreCase("true") || split[3].equalsIgnoreCase("t"))) {
+						plugin.releaseColor(plugin.getServer().getPlayer(split[1]));
 						plugin.setColor(plugin.getServer().getPlayer(split[1]),ChatColor.valueOf(split[2].toUpperCase()));
 					} else {
 						player.sendMessage(helpMsg);
@@ -142,6 +141,6 @@ public class RandomNameColorPlayerListener extends PlayerListener{
 	}
 	
 	public void onPlayerQuit(PlayerEvent event) {
-		plugin.freeColor(event.getPlayer());
+		plugin.releaseColor(event.getPlayer());
 	}
 }
