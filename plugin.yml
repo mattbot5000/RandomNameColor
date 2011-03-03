@@ -1,0 +1,4 @@
+name: RandomNameColor
+main: com.bukkit.mattbot.RandomNameColor.RandomNameColor
+version: 2.2.1
+

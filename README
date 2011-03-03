@@ -1,5 +1,5 @@
 /shufflecolors
-	Randomly assigns all online players a color. Duplicates will be used after 11 players.
+	Randomly assigns all online players a color. Duplicates will be used after 14 players.
 
 /listcolors
 	Lists all colors used by this plugin.
